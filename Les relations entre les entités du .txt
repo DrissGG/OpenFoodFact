@@ -1,0 +1,13 @@
+Les relations entre les entités du projet Open Food Facts peuvent être définies de la manière suivante :
+
+Un produit (Product) peut avoir plusieurs catégories (Category) et une catégorie peut être associée à plusieurs produits (relation de type N à N). Cette relation est représentée par l'entité associative ProductCategory.
+
+Un produit (Product) peut être noté et commenté par plusieurs utilisateurs (User), et un utilisateur peut noter et commenter plusieurs produits (relation de type N à N). Cette relation est représentée par l'entité associative ProductReview.
+
+Un produit (Product) peut être fabriqué par plusieurs marques (Brand), mais une marque ne peut être associée qu'à un seul produit (relation de type 1 à N).
+
+Un produit (Product) peut être vendu dans plusieurs magasins (Store), et un magasin peut vendre plusieurs produits (relation de type N à N). Cette relation est représentée par l'entité associative ProductStore.
+
+Un produit (Product) peut avoir plusieurs ingrédients (Ingredient) et un ingrédient peut être présent dans plusieurs produits (relation de type N à N). Cette relation est représentée par l'entité associative ProductIngredient.
+
+Un utilisateur (User) peut avoir plusieurs produits dans sa liste de favoris (Favorite), et un produit peut être présent dans la liste de favoris de plusieurs utilisateurs (relation de type N à N). Cette relation est représentée par l'entité associative UserFavorite.

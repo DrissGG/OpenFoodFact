@@ -1,0 +1,37 @@
+1) Analyse des besoins :
+
+Comprendre les fonctionnalités de l'application et les contraintes du projet Open Food Facts.
+Identifier les entités métiers (produits, catégories, marques, ingrédients, allergènes, additifs).
+Définir les relations entre les entités (cardinalité, associations).
+Recenser les propriétés des entités et leurs types (string, int, double, etc.)
+
+2) Modèle de classes métier :
+
+Concevoir le diagramme de classes métier.
+Définir les classes, les propriétés et les méthodes.
+Identifier les associations entre les classes (OneToOne, OneToMany, ManyToOne, ManyToMany).
+
+3) Modèle physique de données :
+
+Concevoir le modèle physique de données.
+Définir les tables, les colonnes et les types de données.
+Identifier les relations entre les tables (clés primaires, clés étrangères).
+Appliquer les contraintes d'intégrité (unicité, non-nullité, etc.)
+
+4) Document de conception :
+
+Rédiger un document de conception détaillé qui décrit le modèle de classes métier et le modèle physique de données.
+Inclure les justifications des choix de conception.
+Inclure des exemples pour illustrer le fonctionnement de l'application.
+
+5) Environnement de développement :
+
+Configurer l'environnement de développement (IDE, base de données, serveur d'application, etc.)
+Installer les dépendances nécessaires pour le projet.
+
+6) Gestion de code source :
+
+Créer un repository Git pour le projet.
+Créer une branche pour le développement de la fonctionnalité.
+Versionner le code et le document de conception.
+Le temps estimé pour la réalisation de cet objectif est d'une journée. Il est recommandé de consacrer suffisamment de temps pour chaque étape afin de garantir la qualité de la conception. Le dossier de conception doit être placé dans un répertoire appelé "conception" situé à la racine du projet Git.
