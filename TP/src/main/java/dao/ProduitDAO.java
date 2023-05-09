@@ -2,18 +2,17 @@ package dao;
 
 import java.util.List;
 
+import com.openfood.JPAUtils;
 import com.openfood.model.Produit;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.Query;
+import jakarta.persistence.TypedQuery;
 
 public class ProduitDAO implements IDAO<Produit> {
 
-    private EntityManager entityManager;
-
-    public ProduitDAO(EntityManager entityManager) {
-        this.entityManager = entityManager;
-    }
+    private EntityManager entityManager = JPAUtils.getInstance().getEntityManager();
+    
 
     public Produit findById(int id) {
         return entityManager.find(Produit.class, id);
@@ -21,7 +20,7 @@ public class ProduitDAO implements IDAO<Produit> {
 
     
     public List<Produit> findAll() {
-        Query query = entityManager.createQuery("SELECT p FROM Produit p");
+        TypedQuery<Produit> query = entityManager.createQuery("SELECT p FROM Produit p", Produit.class);
         return query.getResultList();
     }
 

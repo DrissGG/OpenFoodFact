@@ -1,33 +1,40 @@
 package dao;
 
-import java.sql.PreparedStatement;
-import java.sql.Statement;
 import java.util.List;
 
 import com.mysql.cj.Query;
+import com.openfood.JPAUtils;
 import com.openfood.model.Categorie;
 
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.NoResultException;
+import jakarta.persistence.TypedQuery;
 
 public class CategorieDAO implements IDAO<Categorie> {
 
-    private EntityManager entityManager;
-    Statement st = null;
-	PreparedStatement ps =null; 
+    private EntityManager entityManager = JPAUtils.getInstance().getEntityManager();
 
-    public CategorieDAO(EntityManager entityManager) {
-        this.entityManager = entityManager;
-    }
-
-
-	public Categorie findById(int id) {
-        return entityManager.find(Categorie.class, id);
+//findby name catgorie par le nom 
+    
+	public Categorie findByName(String name) {
+        Categorie categorie = null;
+   
+        TypedQuery<Categorie> query = entityManager.createQuery("SELECT c FROM Categorie c WHERE c.name = :name", Categorie.class);
+        query.setParameter("name", name);
+        /* getResultList() récupérer un unique résultat de la requête */
+        try {
+        	categorie = query.getSingleResult();
+		} catch (NoResultException e) {
+			// rien faire ici
+		}       
+        
+        return categorie;
     }
 
     @Override
     public List<Categorie> findAll() {
-        Query query = (Query) entityManager.createQuery("SELECT c FROM Categorie c");
-        return ((jakarta.persistence.Query) query).getResultList();
+        TypedQuery<Categorie> query = entityManager.createQuery("SELECT c FROM Categorie c", Categorie.class);
+        return query.getResultList();
     }
 
     @Override
@@ -53,8 +60,7 @@ public class CategorieDAO implements IDAO<Categorie> {
 
 	@Override
 	public Categorie findById(Long id) {
-		// TODO Auto-generated method stub
-		return null;
+		return entityManager.find(Categorie.class, id);
 	}
 }
     

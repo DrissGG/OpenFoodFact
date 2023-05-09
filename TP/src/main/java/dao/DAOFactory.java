@@ -1,39 +1,45 @@
 package dao;
 
+import com.openfood.JPAUtils;
+
 import jakarta.persistence.EntityManager;
-import jakarta.persistence.EntityManagerFactory;
-import jakarta.persistence.Persistence;
 
 public class DAOFactory {
+	
+	private static DAOFactory INSTANCE = new DAOFactory();
+	private EntityManager entityManager = JPAUtils.getInstance().getEntityManager();
+	
+	private DAOFactory() {}
+	
+	public static DAOFactory getInstance() 
+	{
+		return INSTANCE ;
+	}
+	
+	public ProduitDAO getProduitDAO() 
+	{
+		return new ProduitDAO();
+	}
+	
+	public CategorieDAO getCategorieDAO() 
+	{
+		return new CategorieDAO();
+	}
+	
+	public MarqueDAO getMarqueDAO() 
+	{
+		return new MarqueDAO();
+	}
+	
+	
+	
+	public void close() 
+	{
+		entityManager.close();
+	}
 
-	    private EntityManager entityManager;
-	    private static DAOFactory instance;
-	    
-	    private DAOFactory() {
-	        EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("OpenFood");
-	        entityManager = entityManagerFactory.createEntityManager();
-	    }
-	    
-	    public static DAOFactory getInstance() {
-	        if(instance == null) {
-	            instance = new DAOFactory();
-	        }
-	        return instance;
-	    }
-	    
-	    public ProduitDAO getProduitDAO() {
-	        return new ProduitDAO(entityManager);
-	    }
-	    
-	    public  CategorieDAO getCategorieDAO() {
-	        return new CategorieDAO(entityManager);
-	    }
-	    
-	    // autres méthodes pour d'autres entités si nécessaire
-	    
-	    public void close() {
-	        entityManager.close();
-	    }
+	
+	
 }
 
 
