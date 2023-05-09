@@ -13,6 +13,7 @@ public interface IDAO<T> {
     public T findById(Long id);
     
     public List<T> findAll();
+     
     
 }
 

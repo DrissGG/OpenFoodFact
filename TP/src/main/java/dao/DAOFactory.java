@@ -31,7 +31,18 @@ public class DAOFactory {
 		return new MarqueDAO();
 	}
 	
-	
+	public IngredientDAO getIngredientDAO() 
+	{
+		return new IngredientDAO();
+	}
+	public AllergeneDAO getAllergeneDAO() 
+	{
+		return new AllergeneDAO();
+	}
+	public AdditifDAO getAdditifDAO() 
+	{
+		return new AdditifDAO();
+	}
 	
 	public void close() 
 	{
