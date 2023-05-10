@@ -9,24 +9,31 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import com.openfood.model.Additif;
+import com.openfood.model.Allergene;
 import com.openfood.model.Categorie;
+import com.openfood.model.Ingredient;
 import com.openfood.model.Marque;
+import com.openfood.model.NutriScore;
 import com.openfood.model.Produit;
 
+import dao.AdditifDAO;
+import dao.AllergeneDAO;
 import dao.CategorieDAO;
 import dao.DAOFactory;
+import dao.IngredientDAO;
 import dao.MarqueDAO;
 import dao.ProduitDAO;
 
 public class LectureFichier {
 
 	public void parseFile() throws IOException {
-		// TODO Auto-generated method stub
 		Path pathFile = Paths.get("open-food-facts.csv"); // emplacement du fichier 
 		List<String> lines = Files.readAllLines(pathFile, StandardCharsets.UTF_8);
 	
-		List<String> data = new ArrayList<>();
 		int count= 0;
+		
+		long debut = System.currentTimeMillis();
 		
 		for(String line : lines) {
 			if(count == 0) {
@@ -35,7 +42,12 @@ public class LectureFichier {
 			}
 			Produit produit = new Produit();
 			
-			String[] values = line.split("\\|") ;
+			String[] values = line.split("\\|") ;	
+			if(values.length > 30) {
+				count++;
+				continue;			
+			}
+			
             for (int i = 0; i< values.length; i++) {
             	if(values[i].trim().length() == 0 ) {
             		continue;
@@ -74,6 +86,138 @@ public class LectureFichier {
 					}
 	                
 	                break;
+				case 2:
+					produit.setName(values[i].trim());
+					break;
+				case 3:
+					produit.setNutriscore(NutriScore.valueOf(values[i].trim().toUpperCase()));
+					break;
+				case 4:
+					IngredientDAO ingredientDAO = DAOFactory.getInstance().getIngredientDAO();
+	                String[] ingredientsTab = values[i].trim().replaceAll("[%_()\\*]", "").split(",");
+	                for (String ing : ingredientsTab) {
+	                	
+	                	Ingredient ingredient = ingredientDAO.findByName(ing);
+		                if (ingredient == null) {
+		                	ingredient = new Ingredient();
+		                	ingredient.setName(ing);
+		                	ingredientDAO.create(ingredient);
+		                }
+		                produit.getIngredients().add(ingredient);
+					}
+					
+					break;
+				case 5:
+					try {
+						produit.setEnergy(Float.parseFloat(values[i].trim()));
+					} catch (NumberFormatException e) {
+						// TODO: handle exception
+					}
+					
+					break;
+				case 6:
+					produit.setGraisse(Float.valueOf(values[i].trim()));
+					break;
+				case 7:
+					produit.setSucres(Float.valueOf(values[i].trim()));
+					break;
+				case 8:
+					produit.setFibres(Float.valueOf(values[i].trim()));
+					break;
+				case 9:
+					produit.setProteines(Float.valueOf(values[i].trim()));
+					break;
+				case 10:
+					produit.setSel(Double.valueOf(values[i].trim()));
+					break;
+				case 11:
+					produit.setVitA(Double.valueOf(values[i].trim()));
+					break;
+				case 12:
+					produit.setVitD(Double.valueOf(values[i].trim()));
+					break;
+				case 13:
+					produit.setVitE(Double.valueOf(values[i].trim()));
+					break;
+				case 14:
+					produit.setVitK(Double.valueOf(values[i].trim()));
+					break;
+				case 15:
+					produit.setVitC(Double.valueOf(values[i].trim()));
+					break;
+				case 16:
+					produit.setVitB1(Double.valueOf(values[i].trim()));
+					break;
+				case 17:
+					produit.setVitB2(Double.valueOf(values[i].trim()));
+					break;
+				case 18:
+					produit.setVitPP(Double.valueOf(values[i].trim()));
+					break;
+				case 19:
+					produit.setVitB6(Double.valueOf(values[i].trim()));
+					break;
+				case 20:
+					produit.setVitB9(Double.valueOf(values[i].trim()));
+					break;
+				case 21:
+					produit.setVitB12(Double.valueOf(values[i].trim()));
+					break;
+				case 22:
+					produit.setCalcium(Double.valueOf(values[i].trim()));
+					break;
+				case 23:
+					produit.setMagnesium(Double.valueOf(values[i].trim()));
+					break;
+				case 24:
+					produit.setIron(Double.valueOf(values[i].trim()));
+					break;
+				case 25:
+					produit.setFer(Double.valueOf(values[i].trim()));
+					break;
+				case 26:
+					produit.setBetaCarotene(Double.valueOf(values[i].trim()));
+					break;
+				case 27:
+					produit.setPresenceHuilePalme(Boolean.valueOf(values[i].trim()));
+					break;
+				case 28: //allergenes
+					AllergeneDAO allergeneDAO = DAOFactory.getInstance().getAllergeneDAO();
+	                String[] allergeneTab = values[i].trim().split(",");
+	                for (String all : allergeneTab) {
+	                	
+	                	Allergene allergene = allergeneDAO.findByName(all);
+		                if (allergene == null) {
+		                	allergene = new Allergene();
+		                	allergene.setName(all);
+		                	allergeneDAO.create(allergene);
+		                }
+		                produit.getAllergenes().add(allergene);
+					}
+					break;
+				case 29: //additifs
+					AdditifDAO additifDAO = DAOFactory.getInstance().getAdditifDAO();
+	                String[] additifTab = values[i].trim().split(",");
+//	                String[] additifTab0 = values[0].trim().split("-");
+	                for (String addit : additifTab) {
+	                	//rechercher espace indexof
+	                	String code = addit.substring(0,addit.indexOf(" "));
+	                	String name = addit.substring(addit.indexOf("-")+ 1).trim();
+	                	
+	                	Additif additif = additifDAO.findByCode(code);
+	               
+		                if (additif == null ) {
+		                	additif = new Additif();
+		                	additif.setNom(name);
+		                	additif.setCode(code);
+		                	additifDAO.create(additif);
+		                }
+
+		                produit.getAdditifs().add(additif);
+					}
+	                
+
+					break;
 
 				default:
 					break;
@@ -83,11 +227,17 @@ public class LectureFichier {
                  
             DAOFactory.getInstance().getProduitDAO().create(produit);
         	count++; // incrémentation du compteur
-            if (count == 500) { // condition de sortie de la boucle
+            if (count == 1000) { // condition de sortie de la boucle
                 break;
             }
             
+            
 		}
+		long fin = System.currentTimeMillis();
+		
+        System.out.println("Temps écoulé en millisecondes :" + (fin - debut));
+		System.out.println("Temps écoulé en minutes :" + (fin - debut)/60000);
+		
 		
 	}
 

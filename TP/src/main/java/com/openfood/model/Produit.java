@@ -18,7 +18,7 @@ public class Produit {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	private String name;
-	private Integer energy;
+	private Float energy;
 	private Float graisse;
 	private Float sucres;
 	private Float fibres;
@@ -72,10 +72,10 @@ public class Produit {
 	public void setName(String name) {
 		this.name = name;
 	}
-	public Integer getEnergy() {
+	public Float getEnergy() {
 		return energy;
 	}
-	public void setEnergy(Integer energy) {
+	public void setEnergy(Float energy) {
 		this.energy = energy;
 	}
 	public Float getGraisse() {

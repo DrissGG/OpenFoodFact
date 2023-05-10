@@ -12,7 +12,6 @@ public class AppMain {
 		
 		lectureFichier.parseFile();
 		
-
 		JPAUtils.getInstance().getEntityManager().close();
 	}
 

@@ -3,10 +3,12 @@ package com.openfood.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Index;
 import jakarta.persistence.ManyToMany;
 
 @Entity
@@ -15,7 +17,10 @@ public class Additif {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	private String nom;
+	
+	@Column(name = "code", unique = true )
 	private String code;
+	
 	
 	@ManyToMany(mappedBy = "additifs")
 	private List<Produit> produits = new ArrayList<>();
