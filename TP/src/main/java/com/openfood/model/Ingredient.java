@@ -15,7 +15,7 @@ public class Ingredient {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	@Column(length = 65535)
+	@Column(length = 6000)
 	private String name;
 	
 	@ManyToMany(mappedBy = "ingredients")

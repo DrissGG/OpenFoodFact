@@ -9,6 +9,7 @@ public class DAOFactory {
 	private static DAOFactory INSTANCE = new DAOFactory();
 	private EntityManager entityManager = JPAUtils.getInstance().getEntityManager();
 	
+	
 	private DAOFactory() {}
 	
 	public static DAOFactory getInstance() 

@@ -47,7 +47,6 @@ public class ProduitDAO implements IDAO<Produit> {
 
 	@Override
 	public Produit findById(Long id) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 }

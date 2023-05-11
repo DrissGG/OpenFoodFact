@@ -26,6 +26,23 @@ import dao.MarqueDAO;
 import dao.ProduitDAO;
 
 public class LectureFichier {
+	
+	private final CategorieDAO categorieDAO;
+    private final MarqueDAO marqueDAO;
+    private final IngredientDAO ingredientDAO;
+    private final AdditifDAO additifDAO;
+    private final AllergeneDAO allergeneDAO;
+    private final ProduitDAO produitDAO;
+
+    public LectureFichier() {
+        DAOFactory daoFactory = DAOFactory.getInstance();
+        this.categorieDAO = daoFactory.getCategorieDAO();
+        this.marqueDAO = daoFactory.getMarqueDAO();
+        this.ingredientDAO = daoFactory.getIngredientDAO();
+        this.additifDAO = daoFactory.getAdditifDAO();
+        this.allergeneDAO = daoFactory.getAllergeneDAO();
+        this.produitDAO = daoFactory.getProduitDAO();
+    }
 
 	public void parseFile() throws IOException {
 		Path pathFile = Paths.get("open-food-facts.csv"); // emplacement du fichier 
@@ -52,6 +69,7 @@ public class LectureFichier {
             	if(values[i].trim().length() == 0 ) {
             		continue;
             	}
+            	
             	switch (i) {
             	/*
             	 * Récupérer le nom de la catégorie dans la première colonne
@@ -60,19 +78,18 @@ public class LectureFichier {
             	 * Récupérer l'objet Categorie correspondant (soit celui existant, soit celui que vous venez de créer) et l'utiliser pour remplir l'attribut categorie du produit.
             	 * */
 				case 0: 
-				    CategorieDAO categorieDAO = DAOFactory.getInstance().getCategorieDAO();
+//				    CategorieDAO categorieDAO = DAOFactory.getInstance().getCategorieDAO();
 	                Categorie categorie = categorieDAO.findByName(values[i].trim());
 	                if (categorie == null) {
 	                    categorie = new Categorie();
 	                    categorie.setName(values[i].trim());
 	                    categorieDAO.create(categorie);
 	                }
-	                produit.setCategory(categorie);		
-					
+	                produit.setCategory(categorie);						
 					 
 					break;
 				case 1:
-	                MarqueDAO marqueDAO = DAOFactory.getInstance().getMarqueDAO();
+//	                MarqueDAO marqueDAO = DAOFactory.getInstance().getMarqueDAO();
 	                String[] marquesTab = values[i].trim().split(",");
 	                for (String m : marquesTab) {
 	                	
@@ -93,9 +110,10 @@ public class LectureFichier {
 					produit.setNutriscore(NutriScore.valueOf(values[i].trim().toUpperCase()));
 					break;
 				case 4:
-					IngredientDAO ingredientDAO = DAOFactory.getInstance().getIngredientDAO();
-	                String[] ingredientsTab = values[i].trim().replaceAll("[%_()\\*]", "").split(",");
-	                for (String ing : ingredientsTab) {
+//					IngredientDAO ingredientDAO = DAOFactory.getInstance().getIngredientDAO();
+	                //String[] ingredientsTab = values[i].trim().replaceAll("\\(.*?\\)", "").replaceAll("[()]", "").replaceAll("\\d+\\s+%", "").replaceAll("\\d\\.+", "").replaceAll("\\d+%", "").replaceAll("[_\\*]", "").split(",");
+					String[] ingredientsTab = values[i].replaceAll("\\d+\\s*[d+%.]|\\(.*?\\)|\\*|_|\\(|\\)", "").replaceAll("\\s*,\\s*,\\s*", ", ").trim().split(",");
+					for (String ing : ingredientsTab) {
 	                	
 	                	Ingredient ingredient = ingredientDAO.findByName(ing);
 		                if (ingredient == null) {
@@ -111,7 +129,6 @@ public class LectureFichier {
 					try {
 						produit.setEnergy(Float.parseFloat(values[i].trim()));
 					} catch (NumberFormatException e) {
-						// TODO: handle exception
 					}
 					
 					break;
@@ -182,26 +199,25 @@ public class LectureFichier {
 					produit.setPresenceHuilePalme(Boolean.valueOf(values[i].trim()));
 					break;
 				case 28: //allergenes
-					AllergeneDAO allergeneDAO = DAOFactory.getInstance().getAllergeneDAO();
+//					AllergeneDAO allergeneDAO = DAOFactory.getInstance().getAllergeneDAO();
 	                String[] allergeneTab = values[i].trim().split(",");
 	                for (String all : allergeneTab) {
 	                	
-	                	Allergene allergene = allergeneDAO.findByName(all);
+	                	Allergene allergene = allergeneDAO.findByName(all.trim());
 		                if (allergene == null) {
 		                	allergene = new Allergene();
-		                	allergene.setName(all);
+		                	allergene.setName(all.trim());
 		                	allergeneDAO.create(allergene);
 		                }
 		                produit.getAllergenes().add(allergene);
 					}
 					break;
 				case 29: //additifs
-					AdditifDAO additifDAO = DAOFactory.getInstance().getAdditifDAO();
+//					AdditifDAO additifDAO = DAOFactory.getInstance().getAdditifDAO();
 	                String[] additifTab = values[i].trim().split(",");
-//	                String[] additifTab0 = values[0].trim().split("-");
 	                for (String addit : additifTab) {
 	                	//rechercher espace indexof
-	                	String code = addit.substring(0,addit.indexOf(" "));
+	                	String code = addit.substring(0,addit.indexOf(" ")).trim();
 	                	String name = addit.substring(addit.indexOf("-")+ 1).trim();
 	                	
 	                	Additif additif = additifDAO.findByCode(code);
@@ -224,8 +240,7 @@ public class LectureFichier {
 				}
             	
             }
-                 
-            DAOFactory.getInstance().getProduitDAO().create(produit);
+            produitDAO.create(produit);
         	count++; // incrémentation du compteur
             if (count == 1000) { // condition de sortie de la boucle
                 break;

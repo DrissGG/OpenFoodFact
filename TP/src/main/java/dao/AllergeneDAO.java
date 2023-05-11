@@ -33,32 +33,22 @@ public class AllergeneDAO implements IDAO<Allergene>{
 		TypedQuery<Allergene> query = entityManager.createQuery("SELECT a FROM Categorie a", Allergene.class);
 		return query.getResultList();
 	}
-
-
-
+	
 	@Override
 	public void create(Allergene allergene) {
-		// TODO Auto-generated method stub
 		entityManager.getTransaction().begin();
 		entityManager.persist(allergene);
 		entityManager.getTransaction().commit();
 	}
 
 	@Override
-	public void update(Allergene entity) {
-		// TODO Auto-generated method stub
-		
-	}
+	public void update(Allergene entity) {}
 	
 	@Override
-	public void delete(Allergene entity) {
-		// TODO Auto-generated method stub
-		
-	}
+	public void delete(Allergene entity) {}
 	
 	@Override
 	public Allergene findById(Long id) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 }

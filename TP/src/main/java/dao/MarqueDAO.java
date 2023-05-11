@@ -39,7 +39,6 @@ public class MarqueDAO implements IDAO<Marque> {
         	marque = query.getSingleResult();
 		} catch (NoResultException e) {
 		}
-        
         return marque;
         
     }

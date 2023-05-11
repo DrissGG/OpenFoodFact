@@ -54,20 +54,13 @@ public class AdditifDAO implements IDAO<Additif>{
 	}
 	
 	@Override
-	public void update(Additif additif) {
-		// TODO Auto-generated method stub
-		
-	}
+	public void update(Additif additif) {}
 
 	@Override
-	public void delete(Additif additif) {
-		// TODO Auto-generated method stub
-		
-	}
+	public void delete(Additif additif) {}
 
 	@Override
 	public Additif findById(Long id) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 	
