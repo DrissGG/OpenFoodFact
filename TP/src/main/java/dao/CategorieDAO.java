@@ -2,9 +2,9 @@ package dao;
 
 import java.util.List;
 
-import com.mysql.cj.Query;
 import com.openfood.JPAUtils;
 import com.openfood.model.Categorie;
+import com.openfood.model.Produit;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.NoResultException;
@@ -62,5 +62,14 @@ public class CategorieDAO implements IDAO<Categorie> {
 	public Categorie findById(Long id) {
 		return entityManager.find(Categorie.class, id);
 	}
+	
+	public List<Produit> getTopRatedProductsInCategory(Categorie category) {
+	    EntityManager entityManager = JPAUtils.getInstance().getEntityManager();
+	    TypedQuery<Produit> query = entityManager.createQuery("SELECT p FROM Produit p WHERE p.category = :category ORDER BY p.rating DESC", Produit.class)
+	        .setParameter("category", category)
+	        .setMaxResults(10);
+	    return query.getResultList();
+	}
+
 }
     

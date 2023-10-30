@@ -25,6 +25,12 @@ import dao.IngredientDAO;
 import dao.MarqueDAO;
 import dao.ProduitDAO;
 
+/**
+ * Lit le fichier CSV, traite les données et les enregistre dans la base de données.
+ *
+ * @throws IOException Si une erreur d'entrée/sortie se produit lors de la lecture du fichier.
+ */
+
 public class LectureFichier {
 	
 	private final CategorieDAO categorieDAO;
@@ -240,20 +246,19 @@ public class LectureFichier {
 				}
             	
             }
+         // Enregistrement du produit dans la base de données
             produitDAO.create(produit);
-        	count++; // incrémentation du compteur
-            if (count == 1000) { // condition de sortie de la boucle
+            count++; // Incrémentation du compteur
+            if (count == 1000) { // Condition de sortie de la boucle
                 break;
             }
-            
-            
-		}
-		long fin = System.currentTimeMillis();
-		
-        System.out.println("Temps écoulé en millisecondes :" + (fin - debut));
-		System.out.println("Temps écoulé en minutes :" + (fin - debut)/60000);
-		
-		
-	}
+        }
+
+        long fin = System.currentTimeMillis();
+        long tempsEnSecondes = (fin - debut) / 1000;
+        System.out.println("Temps écoulé en secondes : " + tempsEnSecondes);
+        System.out.println("Temps écoulé en millisecondes : " + (fin - debut));
+        System.out.println("Temps écoulé en minutes : " + (fin - debut) / 60000);
+    }
 
 }

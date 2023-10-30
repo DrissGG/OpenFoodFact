@@ -1,18 +1,14 @@
 package dao;
 
-import com.openfood.model.Categorie;
-import com.openfood.model.Marque;
-
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.NoResultException;
+import java.util.List;
 
 import com.openfood.JPAUtils;
 import com.openfood.model.Marque;
+import com.openfood.model.Produit;
 
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.NoResultException;
 import jakarta.persistence.TypedQuery;
-
-import java.util.List;
 
 public class MarqueDAO implements IDAO<Marque> {
 
@@ -63,4 +59,13 @@ public class MarqueDAO implements IDAO<Marque> {
         entityManager.remove(marque);
         entityManager.getTransaction().commit();
     }
+    
+    public List<Produit> getTopRatedProductsByBrand(Marque brand) {
+        EntityManager entityManager = JPAUtils.getInstance().getEntityManager();
+        TypedQuery<Produit> query = entityManager.createQuery("SELECT p FROM Produit p JOIN p.marques m WHERE m = :brand ORDER BY p.rating DESC", Produit.class)
+            .setParameter("brand", brand)
+            .setMaxResults(10);
+        return query.getResultList();
+    }
+
 }

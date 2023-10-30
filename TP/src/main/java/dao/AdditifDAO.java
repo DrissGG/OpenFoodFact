@@ -22,6 +22,13 @@ public class AdditifDAO implements IDAO<Additif>{
 		entityManager.getTransaction().commit();
 		
 	}
+	
+	/**
+	 * Recherche un additif par son nom dans la base de données.
+	 *
+	 * @param name Le nom de l'additif à rechercher.
+	 * @return L'objet Additif correspondant au nom spécifié, ou null s'il n'est pas trouvé.
+	 */
 	public Additif findByName(String name) {
 		TypedQuery<Additif> query = entityManager.createQuery("SELECT a FROM Additif a WHERE a.nom = :nom", Additif.class);
 		query.setParameter("nom", name);
@@ -34,6 +41,13 @@ public class AdditifDAO implements IDAO<Additif>{
 		}
 		return additif;
 	}
+	
+	/**
+	 * Recherche un additif par son code dans la base de données.
+	 *
+	 * @param code Le code de l'additif à rechercher.
+	 * @return L'objet Additif correspondant au code spécifié, ou null s'il n'est pas trouvé.
+	 */
 	public Additif findByCode(String code) {
 		TypedQuery<Additif> query = entityManager.createQuery("SELECT a FROM Additif a WHERE a.code = :code", Additif.class);
 		query.setParameter("code", code);
